@@ -81,10 +81,12 @@ public class MessageHandler implements BusinessIO{
                     return "Erro: Concluir tarefa\n";
                 }
                 case "pedido_notificacao":{
-                    
+                    //TODO:
+                    return "Erro: Não implementado\n";
                 }
                 case "listar_notificacoes":{
-                    
+                    //TODO:
+                    return "Erro: Não implementado\n";
                 }
                 case "listar_items":{
                     return listar_items();
@@ -115,63 +117,62 @@ public class MessageHandler implements BusinessIO{
 
     @Override
     public boolean cliente_login(String cliente, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.cliente_login(cliente, password);
     }
 
     @Override
     public String listar_clientes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_clientes();
     }
 
     @Override
     public void abastecer(String item, int quantidade) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        facade.abastecer(item, quantidade);
     }
 
     @Override
     public boolean definir_tarefa(String nome, TreeMap<String, Integer> items) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.definir_tarefa(nome, items);
     }
 
     @Override
     public long iniciar_tarefa(String tarefa) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.iniciar_tarefa(tarefa);
     }
 
     @Override
     public String concluir_tarefa(Long tarefa_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.concluir_tarefa(tarefa_id);
     }
 
     @Override
     public boolean pedido_notificacao(Long[] tarefas, String cliente) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.pedido_notificacao(tarefas, cliente);
     }
 
     @Override
     public ArrayList<String> listar_notificacoes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_notificacoes();
     }
 
     @Override
     public String listar_items() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_items();
     }
 
     @Override
     public String listar_tarefas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_tarefas();
     }
 
     @Override
     public String listar_tarefas_activas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_tarefas_activas();
     }
 
     @Override
     public String listar_tarefas_concluidas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.listar_tarefas_concluidas();
     }
-
 
 }
