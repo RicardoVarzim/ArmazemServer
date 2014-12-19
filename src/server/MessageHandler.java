@@ -44,19 +44,41 @@ public class MessageHandler implements BusinessIO{
                     return "Erro: Registar Cliente\n";
                 }
                 case "cliente_login":{
-                    
+                    if(cmd.args.size == 2){
+                        if(cliente_login(cmd.args.listArgs.get(0),cmd.args.listArgs.get(1)))
+                            return "Login efetuado com sucesso\n";
+                    }
+                    return "Erro: Login Cliente\n";
                 }
                 case "abastecer":{
-                    
+                    if(cmd.args.size == 2){
+                        String item = cmd.args.listArgs.get(0);
+                        int quantidade = Integer.valueOf(cmd.args.listArgs.get(1));
+                        abastecer(item,quantidade);
+                        return "Abastecer " + quantidade +" " + item + "\n";
+                    }
+                    return "Erro: Abastecer\n";
                 }
                 case "definir_tarefa":{
-                    
+//                    if(cmd.args.size == 2){
+//                        String nome = cmd.args.listArgs.get(0);
+//                        definir_tarefa(nome,quantidade);
+//                        return "Abastecer " + quantidade +" " + item + "\n";
+//                    }
+                    return "Erro: Não implementado\n";
                 }
                 case "iniciar_tarefa":{
-                    
+                    if(cmd.args.size == 1){
+                        //TODO: return id tarefa
+                        iniciar_tarefa(cmd.args.listArgs.get(0));
+                    }
                 }
                 case "concluir_tarefa":{
-                    
+                    if(cmd.args.size == 1){
+                        long id = Long.valueOf(cmd.args.listArgs.get(0));
+                        return concluir_tarefa(id);
+                    }
+                    return "Erro: Concluir tarefa\n";
                 }
                 case "pedido_notificacao":{
                     
@@ -65,16 +87,16 @@ public class MessageHandler implements BusinessIO{
                     
                 }
                 case "listar_items":{
-                    
+                    return listar_items();
                 }
                 case "listar_tarefas":{
-                    
+                    return listar_tarefas();
                 }
                 case "listar_tarefas_activas":{
-                    
+                    return listar_tarefas_activas();
                 }
                 case "listar_tarefas_concluidas":{
-                    
+                    return listar_tarefas_concluidas();
                 }
                 default:
                     return "Invalid Command!\n";
