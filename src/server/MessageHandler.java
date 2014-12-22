@@ -31,80 +31,92 @@ public class MessageHandler implements BusinessIO{
         this.cmd = cmd;
     }
     
-    public String ResolveMessage(Command c) {
+    public Command ResolveMessage(Command c) {
         this.cmd = c;
         
         if(cmd!=null){
             switch(cmd.type){
                 case "registar_cliente":{
                     if(cmd.args.size == 2){
-                        if(registar_cliente(cmd.args.listArgs.get(0),cmd.args.listArgs.get(1)))
-                            return "Cliente registado com sucesso\n";
+                        cmd.result = registar_cliente((String)cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(1));
                     }
-                    return "Erro: Registar Cliente\n";
+                    return c;
                 }
                 case "cliente_login":{
                     if(cmd.args.size == 2){
-                        if(cliente_login(cmd.args.listArgs.get(0),cmd.args.listArgs.get(1)))
-                            return "Login efetuado com sucesso\n";
+                        cmd.result = cliente_login((String)cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(1));  
                     }
-                    return "Erro: Login Cliente\n";
+                    return cmd;
+                }
+                case "listar_clientes":{
+                    cmd.result = listar_clientes();
+                    return cmd;
                 }
                 case "abastecer":{
                     if(cmd.args.size == 2){
-                        String item = cmd.args.listArgs.get(0);
-                        int quantidade = Integer.valueOf(cmd.args.listArgs.get(1));
+                        String item = (String) cmd.args.listArgs.get(0);
+                        int quantidade = (int)cmd.args.listArgs.get(1);
                         abastecer(item,quantidade);
-                        return "Abastecer " + quantidade +" " + item + "\n";
+                        cmd.result = "Abastecer " + quantidade +" " + item + "\n";
                     }
-                    return "Erro: Abastecer\n";
+                    else cmd.result = "Erro: Abastecer\n";
+                    return cmd;
                 }
                 case "definir_tarefa":{
-//                    if(cmd.args.size == 2){
-//                        String nome = cmd.args.listArgs.get(0);
-//                        definir_tarefa(nome,quantidade);
-//                        return "Abastecer " + quantidade +" " + item + "\n";
-//                    }
-                    return "Erro: Não implementado\n";
+                    if(cmd.args.size == 2){
+                        String nome =(String) cmd.args.listArgs.get(0);
+                        cmd.result = definir_tarefa(nome,(TreeMap< String,Integer >)cmd.args.listArgs.get(1));
+                        
+                    }
+                    return cmd;
                 }
                 case "iniciar_tarefa":{
                     if(cmd.args.size == 1){
                         //TODO: return id tarefa
-                        iniciar_tarefa(cmd.args.listArgs.get(0));
+                        cmd.result = iniciar_tarefa((String)cmd.args.listArgs.get(0));
                     }
+                    return cmd;
                 }
                 case "concluir_tarefa":{
                     if(cmd.args.size == 1){
-                        long id = Long.valueOf(cmd.args.listArgs.get(0));
-                        return concluir_tarefa(id);
+                        long id = (Long)cmd.args.listArgs.get(0);
+                        cmd.result = concluir_tarefa(id);
                     }
-                    return "Erro: Concluir tarefa\n";
+                    return cmd;
                 }
                 case "pedido_notificacao":{
-                    //TODO:
-                    return "Erro: Não implementado\n";
+                    if(cmd.args.size == 2){
+                        cmd.result = pedido_notificacao((Long[])cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(0));
+                    }
+                    return cmd;
                 }
                 case "listar_notificacoes":{
-                    //TODO:
-                    return "Erro: Não implementado\n";
+                    cmd.result = listar_notificacoes();
+                    return cmd;
                 }
                 case "listar_items":{
-                    return listar_items();
+                    cmd.result = listar_items();
+                    return cmd;
                 }
                 case "listar_tarefas":{
-                    return listar_tarefas();
+                    cmd.result = listar_tarefas();
+                    return cmd;
                 }
                 case "listar_tarefas_activas":{
-                    return listar_tarefas_activas();
+                    cmd.result = listar_tarefas_activas();
+                    return cmd;
                 }
                 case "listar_tarefas_concluidas":{
-                    return listar_tarefas_concluidas();
+                    cmd.result = listar_tarefas_concluidas();
+                    return cmd;
                 }
                 default:
-                    return "Invalid Command!\n";
+                    cmd.result ="Invalid Command!\n";
+                    return cmd;
             }
         }else{
-            return "Invalid Command!\n";
+            cmd.result ="Invalid Command!\n";
+            return cmd;
         }
         
     }

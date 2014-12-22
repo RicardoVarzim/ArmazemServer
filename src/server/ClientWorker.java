@@ -36,7 +36,7 @@ class ClientWorker implements Runnable {
         ObjectOutputStream out = null;
         MessageHandler messageHandler;
         Command cmd = null;
-        String res = "";
+        //Object res = null;
         
         try{
             in = new ObjectInputStream(client.getInputStream());
@@ -51,9 +51,9 @@ class ClientWorker implements Runnable {
         while(true){
             try{
                 cmd = (Command) in.readObject();
-                res = messageHandler.ResolveMessage(cmd);
-                System.out.println(res);
-                //out.writeObject(cmd);
+                cmd = messageHandler.ResolveMessage(cmd);
+                //System.out.println(res);
+                out.writeObject(cmd);
                 //out.flush();
                 
             }catch (Exception e) {

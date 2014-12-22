@@ -16,10 +16,10 @@ import java.util.Collection;
  */
 public class Arguments implements Serializable {
     
-    public ArrayList<String> listArgs;
+    public ArrayList<Object> listArgs;
     public int size;
     
-    public Arguments(String[] args){
+    public Arguments(Object[] args){
         this.size = args.length;
         listArgs = new ArrayList<>();
         listArgs.addAll(Arrays.asList(args));  
@@ -28,7 +28,7 @@ public class Arguments implements Serializable {
     @Override
     public String toString(){
         StringBuilder temp = new StringBuilder();
-        for (String listArg : listArgs) {
+        for (Object listArg : listArgs) {
             temp.append(listArg + ";");
         }
         return temp.toString();

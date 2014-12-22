@@ -15,8 +15,9 @@ public class Command implements Serializable {
     
     public String type, sender;
     public Arguments args;
+    public Object result;
     
-    public Command(String type, String sender, String[] arguments){
+    public Command(String type, String sender, Object[] arguments){
         this.type = type;
         this.sender = sender;
         this.args = new Arguments(arguments);
@@ -24,6 +25,6 @@ public class Command implements Serializable {
     
     @Override
     public String toString(){
-        return "{type='"+type+"', sender='"+sender+"', arguments='"+args.toString()+"'}";
+        return "{type='"+type+"', sender='"+sender+"', arguments='"+args.toString()+"', arguments='"+result+"'}";    
     }
 }
