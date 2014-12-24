@@ -9,8 +9,6 @@ import BusinessLayer.BusinessIO;
 import BusinessLayer.Facade;
 import comands.Command;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 /**
@@ -21,35 +19,42 @@ public class MessageHandler implements BusinessIO{
     
     private Facade facade;
     private Command cmd;
+    public boolean hasResponse;
     
     public MessageHandler(Facade f){
-        facade = f;
+        this.facade = f;
+        this.hasResponse = false;
     }
     
     public MessageHandler(Facade f, Command cmd){
         this.facade = f;
         this.cmd = cmd;
+        this.hasResponse = false;
     }
     
     public Command ResolveMessage(Command c) {
         this.cmd = c;
+        this.hasResponse = false;
         
         if(cmd!=null){
             switch(cmd.type){
                 case "registar_cliente":{
                     if(cmd.args.size == 2){
                         cmd.result = registar_cliente((String)cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(1));
+                        hasResponse = true;
                     }
-                    return c;
+                    return cmd;
                 }
                 case "cliente_login":{
                     if(cmd.args.size == 2){
                         cmd.result = cliente_login((String)cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(1));  
+                        hasResponse = true;
                     }
                     return cmd;
                 }
                 case "listar_clientes":{
                     cmd.result = listar_clientes();
+                    hasResponse = true;
                     return cmd;
                 }
                 case "abastecer":{
@@ -66,14 +71,14 @@ public class MessageHandler implements BusinessIO{
                     if(cmd.args.size == 2){
                         String nome =(String) cmd.args.listArgs.get(0);
                         cmd.result = definir_tarefa(nome,(TreeMap< String,Integer >)cmd.args.listArgs.get(1));
-                        
+                        hasResponse = true;
                     }
                     return cmd;
                 }
                 case "iniciar_tarefa":{
                     if(cmd.args.size == 1){
-                        //TODO: return id tarefa
                         cmd.result = iniciar_tarefa((String)cmd.args.listArgs.get(0));
+                        hasResponse = true;
                     }
                     return cmd;
                 }
@@ -81,33 +86,40 @@ public class MessageHandler implements BusinessIO{
                     if(cmd.args.size == 1){
                         long id = (Long)cmd.args.listArgs.get(0);
                         cmd.result = concluir_tarefa(id);
+                        hasResponse = true;
                     }
                     return cmd;
                 }
                 case "pedido_notificacao":{
                     if(cmd.args.size == 2){
                         cmd.result = pedido_notificacao((Long[])cmd.args.listArgs.get(0),(String)cmd.args.listArgs.get(0));
+                        hasResponse = true;
                     }
                     return cmd;
                 }
                 case "listar_notificacoes":{
                     cmd.result = listar_notificacoes();
+                    hasResponse = true;
                     return cmd;
                 }
                 case "listar_items":{
                     cmd.result = listar_items();
+                    hasResponse = true;
                     return cmd;
                 }
                 case "listar_tarefas":{
                     cmd.result = listar_tarefas();
+                    hasResponse = true;
                     return cmd;
                 }
                 case "listar_tarefas_activas":{
                     cmd.result = listar_tarefas_activas();
+                    hasResponse = true;
                     return cmd;
                 }
                 case "listar_tarefas_concluidas":{
                     cmd.result = listar_tarefas_concluidas();
+                    hasResponse = true;
                     return cmd;
                 }
                 default:

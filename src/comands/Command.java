@@ -25,6 +25,6 @@ public class Command implements Serializable {
     
     @Override
     public String toString(){
-        return "{type='"+type+"', sender='"+sender+"', arguments='"+args.toString()+"', arguments='"+result+"'}";    
+        return "{type='"+type+"', sender='"+sender+"', arguments='"+args.toString()+"', result='"+result+"'}";    
     }
 }

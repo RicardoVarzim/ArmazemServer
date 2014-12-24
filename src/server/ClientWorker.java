@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -51,10 +49,14 @@ class ClientWorker implements Runnable {
         while(true){
             try{
                 cmd = (Command) in.readObject();
+                System.out.println("Incoming Command:" + cmd.type);
                 cmd = messageHandler.ResolveMessage(cmd);
-                //System.out.println(res);
-                out.writeObject(cmd);
-                //out.flush();
+                
+                if(messageHandler.hasResponse){
+                    System.out.println("Outcoming Result:" + cmd.type);
+                    out.writeObject(cmd);
+                    out.flush();
+                }
                 
             }catch (Exception e) {
                 System.out.println("Read failed: " + e.getMessage())   ;
@@ -75,6 +77,7 @@ class ClientWorker implements Runnable {
             System.exit(-1);
         }
     }
+    
 //    public void run()
 //    {
 //        ObjectInputStream in = null;
