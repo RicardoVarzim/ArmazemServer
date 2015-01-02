@@ -119,7 +119,7 @@ public class MessageHandler implements BusinessIO{
                     hasResponse = true;
                     return cmd;
                 }
-                case "listar_tarefas_activas":{
+                case "activas":{
                     cmd.result = activas();
                     hasResponse = true;
                     return cmd;
