@@ -1,11 +1,1 @@
-
 build/
-+ dist/
-  + dist/ArmazemServer.jar
-+ nbproject/
-  build-impl.xml
-  + private/
-  + project.properties
-  + project.xml
-+ test/
-+ build.xml
