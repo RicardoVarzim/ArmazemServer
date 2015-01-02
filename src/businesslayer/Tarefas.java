@@ -1,5 +1,6 @@
 package BusinessLayer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,19 +11,21 @@ public class Tarefas {
 	
 	private Counter counter;
 	private HashMap< String,Tarefa >tarefas;
-	private HashMap< Long,String >activas;
-	private HashMap< Long,String >concluidas;
+	private HashMap<Long, String> activas;
+	private HashMap< Long,String >executadas;
 	private HashMap< Long,TarefaThread >running;
 	
 	public Tarefas( Armazem armazem, Clientes clientes )
 	{
 		this.armazem = armazem;
+		this.clientes = clientes;
 		counter = new Counter();
 		tarefas = new HashMap< String,Tarefa >();
 		activas = new HashMap< Long,String >();
-		concluidas = new HashMap< Long,String >();
+		executadas = new HashMap< Long,String >();
 		running = new HashMap< Long,TarefaThread >();
 	}
+	
 	
 	public void abastecer( String item,int quantidade )
 	{
@@ -40,12 +43,15 @@ public class Tarefas {
 	}
 	
 	
-	public long iniciar_tarefa( String item )
+	public long iniciar_tarefa( String tarefa )
 	{
+		if( !tarefas.containsKey( tarefa ) )
+			return -1;
+		
 		long tarefa_id = counter.getC();
-		TarefaThread thread = new TarefaThread( armazem,tarefa_id,tarefas.get( item ) );
+		TarefaThread thread = new TarefaThread( armazem,tarefa_id,tarefas.get( tarefa ) );
 		thread.addListner( this );
-		activas.put( tarefa_id,item );
+		activas.put( tarefa_id,tarefa );
 		running.put( tarefa_id,thread );
 		thread.start();
 		return tarefa_id;
@@ -54,37 +60,40 @@ public class Tarefas {
 	
 	public String concluir_tarefa( Long tarefa_id )
 	{
-            String res = "false";
-            TarefaThread thread;
-
-            if( activas.containsKey( tarefa_id ) )
-            {
-                    thread = running.get( tarefa_id );
-                    thread.interrupt();
-                    activas.remove( tarefa_id );
-                    running.remove( tarefa_id );
-                    clientes.listen( tarefa_id,"Interrompida" );
-                    res="Interrompida";
-            }
-
-            if( concluidas.containsKey( tarefa_id ) )
-            {
-                    clientes.listen( tarefa_id,"Concluida" );
-                    res="Concluida";
-            }
-            return res;
+		TarefaThread thread;
+		
+		if( activas.containsKey( tarefa_id ) )
+		{
+			thread = running.get( tarefa_id );
+			thread.interrupt();
+			activas.remove( tarefa_id );
+			running.remove( tarefa_id );
+			clientes.listen( tarefa_id );
+			return "Interrompida";
+		}
+		
+		else
+			if( executadas.containsKey( tarefa_id ) )
+			{
+				clientes.listen( tarefa_id );
+				return "Concluida";
+			}
+		
+		return "Inexistente";
 	}
+	
 	
 	public void listen( Long tarefa_id )
 	{
 		if( activas.containsKey( tarefa_id ) )
 		{
-			concluidas.put( tarefa_id , activas.get( tarefa_id ) );
+			executadas.put( tarefa_id , activas.get( tarefa_id ) );
 			activas.remove( tarefa_id );
 		}
 	}
 	
-	public synchronized String listar_tarefas()
+	
+	public synchronized String string_tarefas()
 	{
 		StringBuilder s = new StringBuilder();
 		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() ) 
@@ -92,7 +101,8 @@ public class Tarefas {
 		return s+"\n";
 	}
 	
-	public synchronized String listar_tarefas_ativas()
+	
+	public synchronized String ativas()
 	{
 		StringBuilder s = new StringBuilder();
 		s.append("Tarefas Em Execucao: \n");
@@ -101,13 +111,30 @@ public class Tarefas {
 		return s.toString();
 	}
 	
-	public synchronized String listar_tarefas_concluidas()
+	
+	public synchronized String executadas()
 	{
 		StringBuilder s = new StringBuilder();
 		s.append("Tarefas Ja Executadas: \n");
-		for( Map.Entry< Long,String >entry : concluidas.entrySet() ) 
+		for( Map.Entry< Long,String >entry : executadas.entrySet() ) 
 		  s.append( entry.toString()+"\n");
 		return s+"\n";
 	}
-
+	
+	public synchronized TreeMap< String,TreeMap< String,Integer >> listar_tarefas()
+	{
+		TreeMap< String,TreeMap< String,Integer >>tm = new TreeMap< String,TreeMap< String,Integer >>();
+		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() )
+		{ 
+			tm.put( entry.getKey(),entry.getValue().getItems() );
+		}
+		return tm;
+	}
+	
+	public synchronized ArrayList< HashMap< Long,String >> listar_tarefas_concluidas()
+	{
+		ArrayList< HashMap< Long,String >> lista = new ArrayList< HashMap< Long,String >>();
+		lista.add( activas ); lista.add( executadas );
+		return lista;
+	}
 }

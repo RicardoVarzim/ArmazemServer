@@ -1,6 +1,7 @@
 package BusinessLayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeMap;
 
 public class Facade implements BusinessIO {
@@ -8,11 +9,12 @@ public class Facade implements BusinessIO {
 	private Tarefas tarefas;
 	private Clientes clientes;
 	private ArrayList< String >notificacoes;
+	//private ArrayList< Object >observers;
 	
 	public Facade ()
 	{
 		this.armazem = new Armazem();
-		this.clientes = new Clientes();
+		this.clientes = new Clientes( this );
 		this.tarefas = new Tarefas( armazem,clientes );
 		this.notificacoes = new ArrayList< String >();
 		clientes.addListner( this );
@@ -28,6 +30,12 @@ public class Facade implements BusinessIO {
 	public boolean cliente_login( String cliente,String password )
 	{
 		return clientes.cliente_login( cliente,password );
+	}
+	
+	
+	public boolean is_logged_in( String cliente )
+	{
+		return clientes.is_logged_in( cliente );
 	}
 	
 	
@@ -61,33 +69,39 @@ public class Facade implements BusinessIO {
 	}
 	
 	
-	public boolean pedido_notificacao( Long[] tarefas,String cliente ) 
+	public boolean pedido_notificacao( String cliente, ArrayList< Long >tarefas ) 
 	{
-		return clientes.pedido_notificacao( tarefas,cliente );
+		return clientes.pedido_notificacao( cliente,tarefas );
 	}
 	
 	
-	public String listar_items()
+	public HashMap< String,Integer >listar_items()
 	{
-		return armazem.toString();
+		return armazem.listar_items();
 	}
 	
 	
-	public String listar_tarefas()
-	{ 
+	public TreeMap<String,TreeMap< String,Integer >> listar_tarefas()
+	{
 		return tarefas.listar_tarefas();
 	}
 	
 	
-	public String listar_tarefas_activas()
-	{ 
-		return tarefas.listar_tarefas_ativas();
+	public ArrayList< HashMap< Long,String >> listar_tarefas_concluidas()
+	{
+		return tarefas.listar_tarefas_concluidas();
 	}
 	
-	
-	public String listar_tarefas_concluidas()
+	// Deprecated Method
+	public String activas()
 	{ 
-		return tarefas.listar_tarefas_concluidas();
+		return tarefas.ativas();
+	}
+	
+	// Deprecated Method
+	public String executadas()
+	{ 
+		return tarefas.executadas();
 	}
 	
 	

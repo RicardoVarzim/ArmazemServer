@@ -7,22 +7,24 @@ import java.util.Map;
  * 
  */
 public class Armazem {
-	//private ReentrantLock counter_lock = new ReentrantLock();
-	//private int counter=0;															
-	//private List< Item >quantidades = new ArrayList< Item >(); 													
-	//private List< Condition >itemLocks = new ArrayList< Condition >();
-	//private ReentrantLock chave_armazem = new ReentrantLock();
-	private Map< String,Item >armazem = new HashMap<>();
+	private Map< String,Item >armazem;
+	
+	
+	public Armazem(){ this.armazem = new HashMap< String,Item >(); }
+	
 	
 	public void consumir( Map< String,Integer >items ) throws InterruptedException 
 	{
 		for( Map.Entry< String,Integer >entry : items.entrySet() ) 
 		{
 			Item i = armazem.get( entry.getKey() );
-			if( i!=null )
-				i.remove( entry.getValue() );
+			if ( i == null )
+				armazem.put( entry.getKey() , new Item( entry.getKey(),0 ));
+			i = armazem.get( entry.getKey() );
+			i.remove( entry.getValue() );
 		}
 	}
+	
 	
 	public void abastecer( String item,int quantidade )
 	{
@@ -36,10 +38,22 @@ public class Armazem {
 	public synchronized String toString()
 	{
 		StringBuilder s = new StringBuilder();
+		
 		s.append("\n");
 		for( Item item : armazem.values() ) 
 		  s.append( item.toString());
 		
 		return s.toString();
+	}
+	
+	
+	public synchronized HashMap< String,Integer >listar_items()
+	{
+		HashMap< String,Integer >lista = new HashMap< String,Integer >();
+		
+		for( Item i : armazem.values() )
+			lista.put( i.getNome(), i.getQuantidade() );
+		
+		return lista;
 	}
 }

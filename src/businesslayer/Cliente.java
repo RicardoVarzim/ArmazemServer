@@ -26,7 +26,7 @@ public class Cliente {
 		return validado;
 	}
 
-	public boolean listen( Long tarefa_id,String estado )
+	public boolean listen( Long tarefa_id )
 	{
 		tarefas.remove( tarefa_id );
 		return tarefas.isEmpty();

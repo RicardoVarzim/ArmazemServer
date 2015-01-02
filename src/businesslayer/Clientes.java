@@ -8,10 +8,11 @@ public class Clientes {
 	private HashMap< Long,ArrayList< String >>notificar;
 	private Facade listner;
 	
-	public Clientes()
+	public Clientes( Facade facade )
 	{
 		this.clientes = new HashMap< String,Cliente >();
 		this.notificar = new HashMap< Long,ArrayList< String >>();
+		this.listner = facade;
 	}
 	
 	public void addListner( Facade listner ){ this.listner = listner; }
@@ -34,7 +35,15 @@ public class Clientes {
 		return clientes.get( cliente ).login( password );
 	}
 	
-	public boolean pedido_notificacao( Long[] tarefas,String cliente )
+	public boolean is_logged_in( String cliente )
+	{
+		if( clientes.containsKey( cliente ) )
+			return clientes.get( cliente ).getvalidado();
+		
+		return false;
+	}
+	
+	public boolean pedido_notificacao( String cliente,ArrayList< Long >tarefas )
 	{
 		boolean b = false;
 		if( clientes.containsKey( cliente ) )
@@ -54,11 +63,12 @@ public class Clientes {
 		return b;
 	}
 	
-	public void listen( Long tarefa_id,String estado )
+	public void listen( Long tarefa_id )
 	{
-		for( String cliente : notificar.get( tarefa_id ) )
-			if( clientes.get( cliente ).listen( tarefa_id,estado ) )
-				listner.notificar( cliente );
+		if( !clientes.isEmpty() )
+			for( String cliente : notificar.get( tarefa_id ) )
+				if( clientes.get( cliente ).listen( tarefa_id ) )
+					listner.notificar( cliente );
 	}
 	
 	@Override

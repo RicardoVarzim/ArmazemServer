@@ -24,10 +24,11 @@ public class TarefaThread extends Thread {
 	{
 		try {
 			armazem.consumir( tarefa.getItems() );
+			notifyListner();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally{ notifyListner(); }
+		} finally{}
 	}
 
 }

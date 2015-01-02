@@ -13,14 +13,17 @@ public class Item {
 		this.quantidade=quantidade;
 	}
 	
-	//public synchronized int getQuantidade(){ return this.quantidade; }
+	public synchronized int getQuantidade(){ return this.quantidade; }
+	public String getNome(){ return this.nome; }
 	
-	public synchronized void remove( int quantidade ) throws InterruptedException
+	public synchronized void remove( int quantidade )
 	{ 
 		while( this.quantidade<quantidade )
 		{
 			//System.out.println("Waiting...");
-			wait();
+			try {
+				wait();
+			} catch (InterruptedException e) {}
 		}
 		this.quantidade-=quantidade;
 		notifyAll();
