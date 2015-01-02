@@ -1,6 +1,7 @@
-project-root-directory/
-+ build/
+
+build/
 + dist/
+  + dist/ArmazemServer.jar
 + nbproject/
   build-impl.xml
   + private/
