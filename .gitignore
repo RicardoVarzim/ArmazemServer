@@ -1,4 +1,10 @@
-build/
-nbproject/
-*.xml
-dist/
+project-root-directory/
++ build/
++ dist/
++ nbproject/
+  build-impl.xml
+  + private/
+  + project.properties
+  + project.xml
++ test/
++ build.xml
