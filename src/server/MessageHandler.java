@@ -215,4 +215,16 @@ public class MessageHandler implements BusinessIO{
     public String executadas() {
         return facade.executadas();
     }
+
+    @Override
+    public ArrayList<String> tipos_tarefas() {
+        //TODO:
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public TreeMap<String, Integer> items_tarefa(String tarefa) {
+        //TODO:
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
