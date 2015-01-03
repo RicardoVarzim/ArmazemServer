@@ -129,6 +129,18 @@ public class MessageHandler implements BusinessIO{
                     hasResponse = true;
                     return cmd;
                 }
+                case "tipos_tarefas":{
+                    cmd.result = tipos_tarefas();
+                    hasResponse = true;
+                    return cmd;
+                }
+                case "items_tarefa":{
+                    if(cmd.args.size == 1){
+                        cmd.result = items_tarefa((String)cmd.args.listArgs.get(0));
+                        hasResponse = true;
+                    }
+                    return cmd;
+                }
                 default:
                     cmd.result ="Invalid Command!\n";
                     return cmd;
@@ -218,13 +230,11 @@ public class MessageHandler implements BusinessIO{
 
     @Override
     public ArrayList<String> tipos_tarefas() {
-        //TODO:
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return facade.tipos_tarefas();
     }
 
     @Override
     public TreeMap<String, Integer> items_tarefa(String tarefa) {
-        //TODO:
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return facade.items_tarefa(tarefa);
     }
 }
