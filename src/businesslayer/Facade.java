@@ -81,27 +81,21 @@ public class Facade implements BusinessIO {
 	}
 	
 	
-	public TreeMap<String,TreeMap< String,Integer >> listar_tarefas()
+	public ArrayList< String > tipos_tarefas()
 	{
-		return tarefas.listar_tarefas();
+		return tarefas.tipos_tarefas();
 	}
 	
 	
-	public ArrayList< HashMap< Long,String >> listar_tarefas_concluidas()
+	public TreeMap< String,Integer >items_tarefa( String tarefa )
+	{
+		return tarefas.items_tarefa( tarefa );
+	}
+	
+	
+	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas() 
 	{
 		return tarefas.listar_tarefas_concluidas();
-	}
-	
-	// Deprecated Method
-	public String activas()
-	{ 
-		return tarefas.ativas();
-	}
-	
-	// Deprecated Method
-	public String executadas()
-	{ 
-		return tarefas.executadas();
 	}
 	
 	
@@ -116,5 +110,24 @@ public class Facade implements BusinessIO {
 	protected void notificar( String cliente )
 	{
 		notificacoes.add( cliente );
+	}
+	
+	
+//	- Deprecated Methods - 
+	public String activas()
+	{ 
+		return tarefas.ativas();
+	}
+	
+	
+	public String executadas()
+	{ 
+		return tarefas.executadas();
+	}
+	
+	
+	public TreeMap<String,TreeMap< String,Integer >> listar_tarefas()
+	{
+		return tarefas.listar_tarefas();
 	}
 }
