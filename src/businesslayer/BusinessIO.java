@@ -17,10 +17,12 @@ public interface BusinessIO {
 	public boolean pedido_notificacao( String cliente,ArrayList< Long >tarefas );
 	public ArrayList< String >listar_notificacoes(); // NEEDS 2 BE OBSERVABLE
 	public HashMap< String,Integer > listar_items();
-	public TreeMap<String,TreeMap< String,Integer >>listar_tarefas();
-	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas(); // apenas usamos o Size, rever isto!
+	public ArrayList< String > tipos_tarefas();
+	public TreeMap< String,Integer >items_tarefa( String tarefa );
+	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas();
 	
 	// Deprecated
 	public String activas();
 	public String executadas();
+	public TreeMap<String,TreeMap< String,Integer >>listar_tarefas();
 }

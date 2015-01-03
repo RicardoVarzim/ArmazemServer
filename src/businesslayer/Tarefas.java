@@ -43,6 +43,12 @@ public class Tarefas {
 	}
 	
 	
+	public TreeMap< String,Integer >items_tarefa( String tarefa )
+	{
+		return tarefas.get( tarefa ).getItems();
+	}
+	
+	
 	public long iniciar_tarefa( String tarefa )
 	{
 		if( !tarefas.containsKey( tarefa ) )
@@ -121,20 +127,32 @@ public class Tarefas {
 		return s+"\n";
 	}
 	
+	
 	public synchronized TreeMap< String,TreeMap< String,Integer >> listar_tarefas()
 	{
 		TreeMap< String,TreeMap< String,Integer >>tm = new TreeMap< String,TreeMap< String,Integer >>();
 		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() )
-		{ 
+		{
 			tm.put( entry.getKey(),entry.getValue().getItems() );
 		}
 		return tm;
 	}
 	
+	
 	public synchronized ArrayList< HashMap< Long,String >> listar_tarefas_concluidas()
+  {
+      ArrayList< HashMap< Long,String >> lista = new ArrayList< HashMap< Long,String >>();
+      lista.add( activas ); lista.add( executadas );
+      return lista;
+  }
+	
+	
+	public ArrayList< String >tipos_tarefas()
 	{
-		ArrayList< HashMap< Long,String >> lista = new ArrayList< HashMap< Long,String >>();
-		lista.add( activas ); lista.add( executadas );
-		return lista;
+		ArrayList< String >tipos = new ArrayList< String >();
+		
+		tipos.addAll( this.tarefas.keySet() );
+		
+		return tipos;
 	}
 }
