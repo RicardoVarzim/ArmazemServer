@@ -18,7 +18,7 @@ public interface BusinessIO {
 	public ArrayList< String >listar_notificacoes(); // NEEDS 2 BE OBSERVABLE
 	public HashMap< String,Integer > listar_items();
 	public TreeMap<String,TreeMap< String,Integer >>listar_tarefas();
-	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas();
+	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas(); // apenas usamos o Size, rever isto!
 	
 	// Deprecated
 	public String activas();
