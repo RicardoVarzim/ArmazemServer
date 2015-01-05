@@ -15,8 +15,6 @@ public class Clientes {
 		this.listner = facade;
 	}
 	
-	public void addListner( Facade listner ){ this.listner = listner; }
-	
 	public boolean registar_cliente( String cliente,String password )
 	{ 
 		if( clientes.containsKey( cliente ) )
@@ -35,6 +33,13 @@ public class Clientes {
 		return clientes.get( cliente ).login( password );
 	}
 	
+	/*
+	public boolean isAdmin( String Cliente )
+	{
+		return( clientes.get( Cliente ).isAdmin() );
+	}
+	*/
+	
 	public boolean is_logged_in( String cliente )
 	{
 		if( clientes.containsKey( cliente ) )
@@ -47,19 +52,18 @@ public class Clientes {
 	{
 		boolean b = false;
 		if( clientes.containsKey( cliente ) )
-			if( clientes.get( cliente ).getvalidado() )
-				b = true;
-				for( Long tarefa : tarefas )
+			b = true;
+			for( Long tarefa : tarefas )
+			{
+				if( notificar.containsKey( tarefa ) )
+					notificar.get( tarefa ).add( cliente );
+				else
 				{
-					if( notificar.containsKey( tarefa ) )
-						notificar.get( tarefa ).add( cliente );
-					else
-					{
-						ArrayList< String > arraylist = new ArrayList< String >();
-						arraylist.add( cliente );
-						notificar.put( tarefa,arraylist );
-					}
+					ArrayList< String > arraylist = new ArrayList< String >();
+					arraylist.add( cliente );
+					notificar.put( tarefa,arraylist );
 				}
+			}
 		return b;
 	}
 	

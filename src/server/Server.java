@@ -7,6 +7,7 @@ package server;
 
 import BusinessLayer.BusinessIO;
 import BusinessLayer.Facade;
+import Console.Console;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,6 +29,10 @@ public class Server {
     private static Facade business = new Facade();
     
     public static void main(String[] args){
+        
+        Console console= new Console(business);
+        Thread consoleThread = new Thread(console);
+        consoleThread.start();
         
         try
         {

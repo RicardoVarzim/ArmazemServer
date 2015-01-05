@@ -20,6 +20,7 @@ public interface BusinessIO {
 	public ArrayList< String > tipos_tarefas();
 	public TreeMap< String,Integer >items_tarefa( String tarefa );
 	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas();
+	public HashMap< Long,String >listar_real_concluidas();
 	
 	// Deprecated
 	public String activas();

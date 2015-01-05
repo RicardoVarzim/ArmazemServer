@@ -11,19 +11,28 @@ public class Tarefas {
 	
 	private Counter counter;
 	private HashMap< String,Tarefa >tarefas;
-	private HashMap<Long, String> activas;
+	private HashMap< Long,String >activas;
 	private HashMap< Long,String >executadas;
 	private HashMap< Long,TarefaThread >running;
+	private HashMap< Long,String >concluidas;
 	
 	public Tarefas( Armazem armazem, Clientes clientes )
 	{
 		this.armazem = armazem;
 		this.clientes = clientes;
-		counter = new Counter();
-		tarefas = new HashMap< String,Tarefa >();
-		activas = new HashMap< Long,String >();
-		executadas = new HashMap< Long,String >();
-		running = new HashMap< Long,TarefaThread >();
+		
+		this.counter = new Counter();
+		this.tarefas = new HashMap< String,Tarefa >();
+		this.activas = new HashMap< Long,String >();
+		this.executadas = new HashMap< Long,String >();
+		this.running = new HashMap< Long,TarefaThread >();
+		this.concluidas = new HashMap< Long,String >();
+	}
+	
+	
+	public HashMap< Long,String >getConcluidas()
+	{
+		return this.concluidas;
 	}
 	
 	
@@ -72,6 +81,7 @@ public class Tarefas {
 		{
 			thread = running.get( tarefa_id );
 			thread.interrupt();
+			concluidas.put( tarefa_id,activas.get( tarefa_id ) );
 			activas.remove( tarefa_id );
 			running.remove( tarefa_id );
 			clientes.listen( tarefa_id );
@@ -82,6 +92,7 @@ public class Tarefas {
 			if( executadas.containsKey( tarefa_id ) )
 			{
 				clientes.listen( tarefa_id );
+				concluidas.put( tarefa_id,executadas.get( tarefa_id ) );
 				return "Concluida";
 			}
 		
@@ -96,15 +107,6 @@ public class Tarefas {
 			executadas.put( tarefa_id , activas.get( tarefa_id ) );
 			activas.remove( tarefa_id );
 		}
-	}
-	
-	
-	public synchronized String string_tarefas()
-	{
-		StringBuilder s = new StringBuilder();
-		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() ) 
-		  s.append( entry.getKey()+":"+entry.getValue().toString()+" ");
-		return s+"\n";
 	}
 	
 	
@@ -128,22 +130,13 @@ public class Tarefas {
 	}
 	
 	
-	public synchronized TreeMap< String,TreeMap< String,Integer >> listar_tarefas()
-	{
-		TreeMap< String,TreeMap< String,Integer >>tm = new TreeMap< String,TreeMap< String,Integer >>();
-		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() )
-		{
-			tm.put( entry.getKey(),entry.getValue().getItems() );
-		}
-		return tm;
-	}
-	
-	
-	public synchronized ArrayList< HashMap< Long,String >> listar_tarefas_concluidas()
+	public synchronized ArrayList< HashMap< Long,String >>listar_tarefas()
   {
-      ArrayList< HashMap< Long,String >> lista = new ArrayList< HashMap< Long,String >>();
-      lista.add( activas ); lista.add( executadas );
-      return lista;
+     ArrayList< HashMap< Long,String >> lista = new ArrayList< HashMap< Long,String >>();
+     
+     lista.add( activas ); lista.add( executadas );
+     
+     return lista;
   }
 	
 	
@@ -154,5 +147,24 @@ public class Tarefas {
 		tipos.addAll( this.tarefas.keySet() );
 		
 		return tipos;
+	}
+	
+	//Deprecated
+	public synchronized String string_tarefas()
+	{
+		StringBuilder s = new StringBuilder();
+		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() ) 
+		  s.append( entry.getKey()+":"+entry.getValue().toString()+" ");
+		return s+"\n";
+	}
+	
+	public synchronized TreeMap< String,TreeMap< String,Integer >>listar_tarefas_tm()
+	{
+		TreeMap< String,TreeMap< String,Integer >>tm = new TreeMap< String,TreeMap< String,Integer >>();
+		for( Map.Entry< String,Tarefa >entry : tarefas.entrySet() )
+		{
+			tm.put( entry.getKey(),entry.getValue().getItems() );
+		}
+		return tm;
 	}
 }

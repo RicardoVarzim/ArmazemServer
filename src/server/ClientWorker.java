@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,6 +21,8 @@ class ClientWorker implements Runnable {
     
     private Socket client;
     private Facade facade;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
     //Constructor
     ClientWorker(Socket client, Facade facade) 
@@ -30,8 +33,8 @@ class ClientWorker implements Runnable {
     
     public void run()
     {
-        ObjectInputStream in = null;
-        ObjectOutputStream out = null;
+//        ObjectInputStream in = null;
+//        ObjectOutputStream out = null;
         MessageHandler messageHandler;
         Command cmd = null;
         //Object res = null;
@@ -65,6 +68,17 @@ class ClientWorker implements Runnable {
         }
         
         finalize();
+    }
+    
+    public void sendNotification(ArrayList<String> notifications){
+        try{
+            Command temp = new Command("notify","",new Object[]{notifications});
+            out.writeObject(temp);
+            out.flush();
+        }catch(Exception e){
+            System.out.println("Read failed: " + e.getMessage());
+        }
+        
     }
     
     protected void finalize(){

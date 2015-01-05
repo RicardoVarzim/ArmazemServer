@@ -141,9 +141,17 @@ public class MessageHandler implements BusinessIO{
                     }
                     return cmd;
                 }
-                default:
-                    cmd.result ="Invalid Command!\n";
+                case "listar_real_concluidas":{
+                    cmd.result = listar_real_concluidas();
+                    hasResponse = true;
                     return cmd;
+                }
+                default:{
+                    cmd.result ="Invalid Command!\n";
+                    hasResponse = false;
+                    return cmd;
+                }
+                   
             }
         }else{
             cmd.result ="Invalid Command!\n";
@@ -232,9 +240,14 @@ public class MessageHandler implements BusinessIO{
     public ArrayList<String> tipos_tarefas() {
         return facade.tipos_tarefas();
     }
-
+    
     @Override
     public TreeMap<String, Integer> items_tarefa(String tarefa) {
        return facade.items_tarefa(tarefa);
+    }
+
+    @Override
+    public HashMap<Long, String> listar_real_concluidas() {
+        return facade.listar_real_concluidas();
     }
 }

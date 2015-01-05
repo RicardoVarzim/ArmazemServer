@@ -9,7 +9,6 @@ public class Facade implements BusinessIO {
 	private Tarefas tarefas;
 	private Clientes clientes;
 	private ArrayList< String >notificacoes;
-	//private ArrayList< Object >observers;
 	
 	public Facade ()
 	{
@@ -17,7 +16,6 @@ public class Facade implements BusinessIO {
 		this.clientes = new Clientes( this );
 		this.tarefas = new Tarefas( armazem,clientes );
 		this.notificacoes = new ArrayList< String >();
-		clientes.addListner( this );
 	}
 	
 	
@@ -81,7 +79,7 @@ public class Facade implements BusinessIO {
 	}
 	
 	
-	public ArrayList< String > tipos_tarefas()
+	public ArrayList< String >tipos_tarefas()
 	{
 		return tarefas.tipos_tarefas();
 	}
@@ -95,14 +93,23 @@ public class Facade implements BusinessIO {
 	
 	public ArrayList< HashMap< Long,String >>listar_tarefas_concluidas() 
 	{
-		return tarefas.listar_tarefas_concluidas();
+		return tarefas.listar_tarefas();
+	}
+	
+	
+	public HashMap< Long,String >listar_real_concluidas()
+	{
+		return tarefas.getConcluidas();
 	}
 	
 	
 	public ArrayList< String >listar_notificacoes()
 	{
-		ArrayList< String >n = (ArrayList< String >) notificacoes.clone();
+		ArrayList< String >n = new ArrayList< String >();
+		
+		n.addAll( notificacoes );
 		notificacoes.clear();
+		
 		return n;
 	}
 	
@@ -126,8 +133,8 @@ public class Facade implements BusinessIO {
 	}
 	
 	
-	public TreeMap<String,TreeMap< String,Integer >> listar_tarefas()
+	public TreeMap<String,TreeMap< String,Integer >>listar_tarefas()
 	{
-		return tarefas.listar_tarefas();
+		return tarefas.listar_tarefas_tm();
 	}
 }
