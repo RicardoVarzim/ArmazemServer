@@ -91,9 +91,8 @@ public class MessageHandler implements BusinessIO{
                 }
                 case "concluir_tarefa":{
                     if(cmd.args.size == 1){
-                        long id = (Long)cmd.args.listArgs.get(0);
+                        Long id = (Long)cmd.args.listArgs.get(0);
                         cmd.result = concluir_tarefa(id);
-                        hasResponse = true;
                     }
                     return cmd;
                 }

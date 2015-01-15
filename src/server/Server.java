@@ -27,12 +27,16 @@ public class Server {
     private static ServerSocket server;
     private static final int PORT = 1200;
     private static Facade business = new Facade();
+    private static noteHandler noteHandler;
     
     public static void main(String[] args){
         
         Console console= new Console(business);
         Thread consoleThread = new Thread(console);
         consoleThread.start();
+        noteHandler = new noteHandler(business);
+        Thread noteThread = new Thread(noteHandler);
+        noteThread.start();
         
         try
         {
@@ -55,6 +59,7 @@ public class Server {
         try
         {
             w = new ClientWorker(server.accept(),business);
+            noteHandler.addClient(w);
             Thread t = new Thread(w);
             t.start();
         }

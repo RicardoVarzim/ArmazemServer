@@ -69,10 +69,13 @@ public class Clientes {
 	
 	public void listen( Long tarefa_id )
 	{
-		if( !clientes.isEmpty() )
-			for( String cliente : notificar.get( tarefa_id ) )
-				if( clientes.get( cliente ).listen( tarefa_id ) )
-					listner.notificar( cliente );
+		if( !clientes.isEmpty() ){
+                    if(!notificar.isEmpty())
+                        for( String cliente : notificar.get( tarefa_id ) )
+                                    if( clientes.get( cliente ).listen( tarefa_id ) )
+                                            listner.notificar( cliente );
+                }
+			
 	}
 	
 	@Override

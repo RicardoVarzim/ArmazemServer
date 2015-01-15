@@ -33,8 +33,6 @@ class ClientWorker implements Runnable {
     
     public void run()
     {
-//        ObjectInputStream in = null;
-//        ObjectOutputStream out = null;
         MessageHandler messageHandler;
         Command cmd = null;
         //Object res = null;
@@ -53,6 +51,7 @@ class ClientWorker implements Runnable {
             try{
                 cmd = (Command) in.readObject();
                 System.out.println("Incoming Command:" + cmd.type);
+                messageHandler.hasResponse = false;
                 cmd = messageHandler.ResolveMessage(cmd);
                 
                 if(messageHandler.hasResponse){
